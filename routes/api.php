@@ -17,5 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/admin', 'App\Http\Controllers\AdminController@store');
-
+// Route::get('/admin', 'App\Http\Controllers\AdminController@store');
+Route::post('/admin', 'App\Http\Controllers\AdminController@store');
+Route::post('/create-cert', 'App\Http\Controllers\CertificateController@store');
