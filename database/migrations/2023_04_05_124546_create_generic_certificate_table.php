@@ -13,7 +13,7 @@ class CreateGenericCertificateTable extends Migration
      */
     public function up()
     {
-        Schema::create('generic_certificate', function (Blueprint $table) {
+        Schema::create('generic_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('FatherName');
@@ -21,10 +21,15 @@ class CreateGenericCertificateTable extends Migration
             $table->string('nid');
             $table->string('passport');
             $table->string('bid');
+            $table->string('mobile');
+            $table->string('email');
+            $table->string('resident');
             $table->string('birthdate');
             $table->string('presentHoldingNumber');
+            $table->string('presentVillage');
             $table->string('presentPostOffice');
             $table->string('presentPoliceStation');
+            $table->string('presentDistrict');
             $table->string('permanentVillage');
             $table->string('permanentPostOffice');
             $table->string('permanentPoliceStation');
