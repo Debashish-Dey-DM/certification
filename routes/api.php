@@ -29,3 +29,4 @@ Route::get('/get-cert/{id}', 'App\Http\Controllers\CertificateController@getById
 // get certificate by service
 Route::get('/get-cert-by-service/{service}', 'App\Http\Controllers\CertificateController@getByService');
 
+Route::post('/image', 'App\Http\Controllers\CertificateController@imageUpload');

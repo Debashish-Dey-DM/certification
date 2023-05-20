@@ -15,6 +15,7 @@ class CreateGenericCertificateTable extends Migration
     {
         Schema::create('generic_certificates', function (Blueprint $table) {
             $table->id();
+            $table->string('certificateId')->nullable();
             $table->string('name')->nullable();
             $table->string('FatherName')->nullable();
             $table->string('MotherName')->nullable();
@@ -38,7 +39,8 @@ class CreateGenericCertificateTable extends Migration
             $table->string('permanentDistrict')->nullable();
             $table->string('userImage')->nullable();
             $table->string('idVerificationImage')->nullable();
-            $table->string('homeVerificationimage')->nullable();            
+            $table->string('homeVerificationimage')->nullable();
+            $table->string('deathVerificationimage')->nullable();            
             $table->boolean('is_approved')->default(true);
             $table->timestamps();
         });

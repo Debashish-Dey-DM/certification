@@ -32,19 +32,20 @@ class CertificateController extends Controller
         'birthdate' => 'nullable',
         'resident' => 'nullable',
         'service' => 'nullable',
-        'presentAddress.presentHoldingNumber' => 'nullable',
-        'presentAddress.presentVillage' => 'nullable',
-        'presentAddress.presentPostOffice' => 'nullable',
-        'presentAddress.presentPoliceStation' => 'nullable',
-        'presentAddress.presentDistrict' => 'nullable',
-        'permanentAddress.permanentHoldingNumber' => 'nullable',
-        'permanentAddress.permanentVillage' => 'nullable',
-        'permanentAddress.permanentPostOffice' => 'nullable',
-        'permanentAddress.permanentPoliceStation' => 'nullable',
-        'permanentAddress.permanentDistrict' => 'nullable',
+        'presentHoldingNumber' => 'nullable',
+        'presentVillage' => 'nullable',
+        'presentPostOffice' => 'nullable',
+        'presentPoliceStation' => 'nullable',
+        'presentDistrict' => 'nullable',
+        'permanentHoldingNumber' => 'nullable',
+        'permanentVillage' => 'nullable',
+        'permanentPostOffice' => 'nullable',
+        'permanentPoliceStation' => 'nullable',
+        'permanentDistrict' => 'nullable',
         'userImage' => 'nullable',
         'idVerificationImage' => 'nullable',
         'homeVerificationimage' => 'nullable',
+        'deathVerificationimage' => 'nullable',
         
         // Add validation rules for other fields
     ]);
@@ -60,24 +61,62 @@ class CertificateController extends Controller
     $cert->resident = $request->filled('resident') ? $validatedData['resident'] : null;
     $cert->service = $request->filled('service') ? $validatedData['service'] : null;
     $cert->birthdate = $request->filled('birthdate') ? $validatedData['birthdate'] : null;
-    $cert->presentHoldingNumber = $request->filled('presentAddress.presentHoldingNumber') ? $validatedData['presentAddress']['presentHoldingNumber'] : null;
-    $cert->presentVillage = $request->filled('presentAddress.presentVillage') ? $validatedData['presentAddress']['presentVillage'] : null;
-    $cert->presentPostOffice = $request->filled('presentAddress.presentPostOffice') ? $validatedData['presentAddress']['presentPostOffice'] : null;
-    $cert->presentPoliceStation = $request->filled('presentAddress.presentPoliceStation') ? $validatedData['presentAddress']['presentPoliceStation'] : null;
-    $cert->presentDistrict = $request->filled('presentAddress.presentDistrict') ? $validatedData['presentAddress']['presentDistrict'] : null;
-    $cert->permanentHoldingNumber = $request->filled('permanentAddress.permanentHoldingNumber') ? $validatedData['permanentAddress']['permanentHoldingNumber'] : null;
-    $cert->permanentVillage = $request->filled('permanentAddress.permanentVillage') ? $validatedData['permanentAddress']['permanentVillage'] : null;
-    $cert->permanentPostOffice = $request->filled('permanentAddress.permanentPostOffice') ? $validatedData['permanentAddress']['permanentPostOffice'] : null;
-    $cert->permanentPoliceStation = $request->filled('permanentAddress.permanentPoliceStation') ? $validatedData['permanentAddress']['permanentPoliceStation'] : null;
-    $cert->permanentDistrict = $request->filled('permanentAddress.permanentDistrict') ? $validatedData['permanentAddress']['permanentDistrict'] : null;
-    $cert->userImage = $request->filled('userImage') ? $validatedData['userImage'] : null;
-    $cert->idVerificationImage = $request->filled('idVerificationImage') ? $validatedData['idVerificationImage'] : null;
-    $cert->homeVerificationimage = $request->filled('homeVerificationimage') ? $validatedData['homeVerificationimage'] : null;
-    $cert->save();
+    $cert->presentHoldingNumber = $request->filled('presentHoldingNumber') ? $validatedData['presentHoldingNumber'] : null;
+    $cert->presentVillage = $request->filled('presentVillage') ? $validatedData['presentVillage'] : null;
+    $cert->presentPostOffice = $request->filled('presentPostOffice') ? $validatedData['presentPostOffice'] : null;
+    $cert->presentPoliceStation = $request->filled('presentPoliceStation') ? $validatedData['presentPoliceStation'] : null;
+    $cert->presentDistrict = $request->filled('presentDistrict') ? $validatedData['presentDistrict'] : null;
+    $cert->permanentHoldingNumber = $request->filled('permanentHoldingNumber') ? $validatedData['permanentHoldingNumber'] : null;
+    $cert->permanentVillage = $request->filled('permanentVillage') ? $validatedData['permanentVillage'] : null;
+    $cert->permanentPostOffice = $request->filled('permanentPostOffice') ? $validatedData['permanentPostOffice'] : null;
+    $cert->permanentPoliceStation = $request->filled('permanentPoliceStation') ? $validatedData['permanentPoliceStation'] : null;
+    $cert->permanentDistrict = $request->filled('permanentDistrict') ? $validatedData['permanentDistrict'] : null;
 
+    if ($request->hasFile('userImage')) {
+        $userImageName = uniqid().'.'.$request->userImage->extension();  
+        $request->userImage->move(public_path('images'), $userImageName);
+        $userImagePath = 'images/' . $userImageName;
+        } else {
+        $userImagePath = null;
+        }
+        if ($request->hasFile('idVerificationImage')) {
+        $idVerificationImageName = uniqid().'.'.$request->idVerificationImage->extension();
+        $request->idVerificationImage->move(public_path('images'), $idVerificationImageName);
+        $idVerificationImageNamePath = 'images/' . $idVerificationImageName;
+        } else {
+        $idVerificationImageNamePath = null;
+        }
+        if ($request->hasFile('homeVerificationimage')) {
+        $homeVerificationimageName = uniqid().'.'.$request->homeVerificationimage->extension();
+        $request->homeVerificationimage->move(public_path('images'), $homeVerificationimageName);
+        $homeVerificationimageNamePath = 'images/' . $homeVerificationimageName;
+        } else {
+        $homeVerificationimageNamePath = null;
+        }
+        if ($request->hasFile('deathVerificationimage')) {
+        $deathVerificationimageName = uniqid().'.'.$request->deathVerificationimage->extension();
+        $request->deathVerificationimage->move(public_path('images'), $deathVerificationimageName);
+        $deathVerificationimageNamePath = 'images/' . $deathVerificationimageName;
+        } else {
+        $deathVerificationimageNamePath = null;
+        }
+
+        $cert->userImage = $userImagePath;
+        $cert->idVerificationImage = $idVerificationImageNamePath;
+        $cert->homeVerificationimage = $homeVerificationimageNamePath;
+        $cert->deathVerificationimage = $deathVerificationimageNamePath;
+        $cert->save();
+        $certificate = GenericCertificate::find($cert->id);
+        $year = date('Y');
+        $month = date('m');
+        $serial = str_pad($cert->id, 11, '0', STR_PAD_LEFT);
+        $uid = $year . $month . $serial;
+        $certificate->certificateId = $uid;
+        $certificate->save();
     return response()->json([
             'message' => 'Certificate created successfully ',
-             'data'=> $cert,
+        //      'data'=> $cert,
+             'data'=> $certificate,
             
         ], 201);
 }
@@ -104,6 +143,23 @@ public function getByService($service){
             'message' => 'Certificate created successfully ',
              'data'=> $cert,
             
+        ], 201);
+}
+
+public function imageUpload(Request $request){
+//     $imageName = time().'.'.$request->userImage->extension();  
+//     $request->userImage->move(public_path('images'), $imageName);
+    //get path
+        $year = date('Y');
+        $month = date('m');
+        $serial = str_pad(2, 11, '0', STR_PAD_LEFT);
+        $uid = $year . $month . $serial;
+//        $imagePath = 'images/' . $imageName;
+    return response()->json([
+            'message' => 'Certificate created successfully ',
+        //      'data'=> $imageName,
+        //      'path'=> $imagePath,
+             'uid' => $uid,
         ], 201);
 }
 }
