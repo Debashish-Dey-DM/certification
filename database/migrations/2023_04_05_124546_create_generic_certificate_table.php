@@ -15,27 +15,31 @@ class CreateGenericCertificateTable extends Migration
     {
         Schema::create('generic_certificates', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('FatherName');
-            $table->string('MotherName');
-            $table->string('nid');
-            $table->string('passport');
-            $table->string('bid');
-            $table->string('mobile');
-            $table->string('email');
-            $table->string('resident');
-            $table->string('birthdate');
-            $table->string('presentHoldingNumber');
-            $table->string('presentVillage');
-            $table->string('presentPostOffice');
-            $table->string('presentPoliceStation');
-            $table->string('presentDistrict');
-            $table->string('permanentVillage');
-            $table->string('permanentPostOffice');
-            $table->string('permanentPoliceStation');
-            $table->string('permanentDistrict');
-            // is_verified -> boolean
-
+            $table->string('name')->nullable();
+            $table->string('FatherName')->nullable();
+            $table->string('MotherName')->nullable();
+            $table->string('nid')->nullable();
+            $table->string('passport')->nullable();
+            $table->string('bid')->nullable();
+            $table->string('mobile')->nullable();
+            $table->string('email')->nullable();
+            $table->string('birthdate')->nullable();
+            $table->string('resident')->nullable();
+            $table->string('service')->nullable();
+            $table->string('presentHoldingNumber')->nullable();
+            $table->string('presentVillage')->nullable();
+            $table->string('presentPostOffice')->nullable();
+            $table->string('presentPoliceStation')->nullable();
+            $table->string('presentDistrict')->nullable();
+            $table->string('permanentHoldingNumber')->nullable();
+            $table->string('permanentVillage')->nullable();
+            $table->string('permanentPostOffice')->nullable();
+            $table->string('permanentPoliceStation')->nullable();
+            $table->string('permanentDistrict')->nullable();
+            $table->string('userImage')->nullable();
+            $table->string('idVerificationImage')->nullable();
+            $table->string('homeVerificationimage')->nullable();            
+            $table->boolean('is_approved')->default(true);
             $table->timestamps();
         });
     }

@@ -18,16 +18,16 @@ class AdminController extends Controller
         //     'email' => $validatedData['email'],
         //     'password' => Hash::make($validatedData['password']),
         // ]);
-        $admin = new Admin;
-        $admin->name = $request->input('name');
-        $admin->email = $request->input('email');
-        // $admin->password = Hash::make($request->input('password'));
-        $admin->password = $request->input('password');
-        $admin->save();
+        // $admin = new Admin;
+        // $admin->name = $request->input('name');
+        // $admin->email = $request->input('email');
+        // // $admin->password = Hash::make($request->input('password'));
+        // $admin->password = $request->input('password');
+        // $admin->save();
         return response()->json([
             'message' => 'Admin created successfully ',
              'test'=> $request->input('name'),
-            'admin' => $admin
+            // 'admin' => $admin
         ], 201);
     }
 //     public function store2(Request $request)

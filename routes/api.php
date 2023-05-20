@@ -19,4 +19,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 // Route::get('/admin', 'App\Http\Controllers\AdminController@store');
 Route::post('/admin', 'App\Http\Controllers\AdminController@store');
+//create certificate
 Route::post('/create-cert', 'App\Http\Controllers\CertificateController@store');
+// get certificate
+Route::get('/get-cert-all', 'App\Http\Controllers\CertificateController@get');
+// get certificate by id
+Route::get('/get-cert/{id}', 'App\Http\Controllers\CertificateController@getById');
+
+// get certificate by service
+Route::get('/get-cert-by-service/{service}', 'App\Http\Controllers\CertificateController@getByService');
+
