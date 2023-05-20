@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGenericCertificateTable extends Migration
+class CreateApplicationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateGenericCertificateTable extends Migration
      */
     public function up()
     {
-        Schema::create('generic_certificates', function (Blueprint $table) {
-            $table->id();
-            $table->string('certificateId')->nullable();
+        Schema::create('applications', function (Blueprint $table) {
+           $table->id();
+            $table->string('applicationId')->unique();
             $table->string('name')->nullable();
             $table->string('FatherName')->nullable();
             $table->string('MotherName')->nullable();
@@ -40,8 +40,9 @@ class CreateGenericCertificateTable extends Migration
             $table->string('userImage')->nullable();
             $table->string('idVerificationImage')->nullable();
             $table->string('homeVerificationimage')->nullable();
-            $table->string('deathVerificationimage')->nullable();            
-            
+            $table->string('deathVerificationimage')->nullable();  
+            $table->string('comment')->nullable();          
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
@@ -53,6 +54,6 @@ class CreateGenericCertificateTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('generic_certificate');
+        Schema::dropIfExists('applications');
     }
 }

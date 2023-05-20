@@ -28,5 +28,27 @@ Route::get('/get-cert/{id}', 'App\Http\Controllers\CertificateController@getById
 
 // get certificate by service
 Route::get('/get-cert-by-service/{service}', 'App\Http\Controllers\CertificateController@getByService');
-
+//test
 Route::post('/image', 'App\Http\Controllers\CertificateController@imageUpload');
+
+// create application
+Route::post('/create-application', 'App\Http\Controllers\CertificateController@storeApplication');
+
+// get all applications
+Route::get('/get-applications', 'App\Http\Controllers\CertificateController@getApplications');
+
+// get application by id
+Route::get('/get-application/{id}', 'App\Http\Controllers\CertificateController@getApplicationById');
+
+// get application by applicationId
+Route::get('/get-application-by-applicationId/{applicationId}', 'App\Http\Controllers\CertificateController@getApplicationByApplicationId');
+
+// get application by service
+
+Route::get('/get-application-by-service/{service}', 'App\Http\Controllers\CertificateController@getApplicationByService');
+
+//get application by status
+Route::get('/get-application-by-status/{status}', 'App\Http\Controllers\CertificateController@getApplicationByStatus');
+
+// update application status 
+Route::post('/update-application-status/{id}', 'App\Http\Controllers\CertificateController@updateApplicationStatus');
