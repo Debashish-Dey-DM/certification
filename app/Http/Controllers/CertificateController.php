@@ -434,4 +434,16 @@ public function getApplicationByStatus($status){
             
         ], 201);
     }
+    public function updateApplicationStatusWithComment(Request $request, $id){
+        $application = Application::find($id);
+        $application->status = $request->status;
+        $application->comment = $request->comment;
+        $application->save();
+        return response()->json([
+            'message' => 'Application ',
+        //      'data'=> $cert,
+             'data'=> $application,
+            
+        ], 201);
+    }
 }

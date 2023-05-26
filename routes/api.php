@@ -60,6 +60,10 @@ Route::get('/get-application-by-status/{status}', 'App\Http\Controllers\Certific
 // update application status 
 Route::post('/update-application-status/{id}', 'App\Http\Controllers\CertificateController@updateApplicationStatus');
 
+// update application status with comment
+
+Route::post('/update-application-status-comment/{id}', 'App\Http\Controllers\CertificateController@updateApplicationStatusWithComment');
+
 // update application 
 
 Route::post('/update-application/{id}', 'App\Http\Controllers\CertificateController@updateApplication');
