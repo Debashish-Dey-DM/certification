@@ -381,4 +381,57 @@ public function getApplicationByStatus($status){
             
         ], 201);
     }
+    public function getByCertificateId($certificateId){
+        $Certificate = GenericCertificate::where('certificateId', $certificateId)->get();
+        return response()->json([
+                'message' => 'Certificate by Certificate id ',
+            //      'data'=> $cert,
+                 'data'=> $Certificate,
+                
+            ], 201);
+        }
+    public function getByCertificateIdAndDob($certificateId, $dob){
+        $Certificate = GenericCertificate::where('certificateId', $certificateId)->where('birthdate', $dob)->get();
+        return response()->json([
+                'message' => 'Certificate by Certificate id and dob ',
+            //      'data'=> $cert,
+                 'data'=> $Certificate,
+                
+            ], 201);
+        }
+    public function updateApplication(Request $request, $id){
+        $application = Application::find($id);
+        $application->name = $request->name;
+        $application->FatherName = $request->FatherName;
+        $application->MotherName = $request->MotherName;
+        $application->nid = $request->nid;
+        $application->passport = $request->passport;
+        $application->bid = $request->bid;
+        $application->mobile = $request->mobile;
+        $application->email = $request->email;
+        $application->resident = $request->resident;
+        $application->service = $request->service;
+        $application->birthdate = $request->birthdate;
+        $application->presentHoldingNumber = $request->presentHoldingNumber;
+        $application->presentVillage = $request->presentVillage;
+        $application->presentPostOffice = $request->presentPostOffice;
+        $application->presentPoliceStation = $request->presentPoliceStation;
+        $application->presentDistrict = $request->presentDistrict;
+        $application->permanentHoldingNumber = $request->permanentHoldingNumber;
+        $application->permanentVillage = $request->permanentVillage;
+        $application->permanentPostOffice = $request->permanentPostOffice;
+        $application->permanentPoliceStation = $request->permanentPoliceStation;
+        $application->permanentDistrict = $request->permanentDistrict;
+        // $application->userImage = $request->userImage;
+        // $application->idVerificationImage = $request->idVerificationImage;
+        // $application->homeVerificationimage = $request->homeVerificationimage;
+        // $application->deathVerificationimage = $request->deathVerificationimage;
+        $application->save();
+        return response()->json([
+            'message' => 'Application ',
+        //      'data'=> $cert,
+             'data'=> $application,
+            
+        ], 201);
+    }
 }
