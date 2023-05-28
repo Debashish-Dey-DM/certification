@@ -19,6 +19,7 @@ class CreateApplicationsTable extends Migration
             $table->string('name')->nullable();
             $table->string('FatherName')->nullable();
             $table->string('MotherName')->nullable();
+            $table->string('SpouseName')->nullable();
             $table->string('nid')->nullable();
             $table->string('passport')->nullable();
             $table->string('bid')->nullable();
@@ -27,6 +28,7 @@ class CreateApplicationsTable extends Migration
             $table->string('birthdate')->nullable();
             $table->string('resident')->nullable();
             $table->string('service')->nullable();
+            $table->boolean('bn')->default(false);
             $table->string('presentHoldingNumber')->nullable();
             $table->string('presentVillage')->nullable();
             $table->string('presentPostOffice')->nullable();

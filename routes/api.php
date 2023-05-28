@@ -26,6 +26,13 @@ Route::get('/get-cert-all', 'App\Http\Controllers\CertificateController@get');
 // get certificate by id
 Route::get('/get-cert/{id}', 'App\Http\Controllers\CertificateController@getById');
 
+// get certificate by certificate id
+Route::get('/get-cert-by-certificateId/{certificateId}', 'App\Http\Controllers\CertificateController@getByCertificateId');
+
+// get certificate by certificate id and date of birth
+
+Route::get('/get-cert-by-certificateId-dob/{certificateId}/{dob}', 'App\Http\Controllers\CertificateController@getByCertificateIdAndDob');
+
 // get certificate by service
 Route::get('/get-cert-by-service/{service}', 'App\Http\Controllers\CertificateController@getByService');
 //test
@@ -51,4 +58,16 @@ Route::get('/get-application-by-service/{service}', 'App\Http\Controllers\Certif
 Route::get('/get-application-by-status/{status}', 'App\Http\Controllers\CertificateController@getApplicationByStatus');
 
 // update application status 
-Route::post('/update-application-status/{id}', 'App\Http\Controllers\CertificateController@updateApplicationStatus');
+//Route::post('/update-application-status/{id}', 'App\Http\Controllers\CertificateController@updateApplicationStatus');
+
+// update application status with comment
+
+Route::post('/update-application-status-comment/{id}', 'App\Http\Controllers\CertificateController@updateApplicationStatusWithComment');
+
+// update application 
+
+Route::post('/update-application/{id}', 'App\Http\Controllers\CertificateController@updateApplication');
+
+// recover application id by service, dob, nid
+
+Route::post('/recover-application-id', 'App\Http\Controllers\CertificateController@recoverApplicationId');
