@@ -25,6 +25,7 @@ class CertificateController extends Controller
         'name' => 'required',
         'fatherName' => 'nullable',
         'motherName' => 'nullable',
+        'SpouseName' => 'nullable',
         'nid' => 'nullable',
         'passport' => 'nullable',
         'bid' => 'nullable',
@@ -33,6 +34,7 @@ class CertificateController extends Controller
         'birthdate' => 'nullable',
         'resident' => 'nullable',
         'service' => 'nullable',
+        'bn' => 'nullable',
         'presentHoldingNumber' => 'nullable',
         'presentVillage' => 'nullable',
         'presentPostOffice' => 'nullable',
@@ -54,6 +56,7 @@ class CertificateController extends Controller
     $cert->name = $request->filled('name') ? $validatedData['name'] : null;
     $cert->FatherName = $request->filled('fatherName') ? $validatedData['fatherName'] : null;
     $cert->MotherName = $request->filled('motherName') ? $validatedData['motherName'] : null;
+    $cert->SpouseName = $request->filled('SpouseName') ? $validatedData['SpouseName'] : null;
     $cert->nid = $request->filled('nid') ? $validatedData['nid'] : null;
     $cert->passport = $request->filled('passport') ? $validatedData['passport'] : null;
     $cert->bid = $request->filled('bid') ? $validatedData['bid'] : null;
@@ -61,6 +64,7 @@ class CertificateController extends Controller
     $cert->email = $request->filled('email') ? $validatedData['email'] : null;
     $cert->resident = $request->filled('resident') ? $validatedData['resident'] : null;
     $cert->service = $request->filled('service') ? $validatedData['service'] : null;
+    $cert->bn = $request->filled('bn') ? $validatedData['bn'] : false;
     $cert->birthdate = $request->filled('birthdate') ? $validatedData['birthdate'] : null;
     $cert->presentHoldingNumber = $request->filled('presentHoldingNumber') ? $validatedData['presentHoldingNumber'] : null;
     $cert->presentVillage = $request->filled('presentVillage') ? $validatedData['presentVillage'] : null;
@@ -169,6 +173,7 @@ public function storeApplication(Request $request){
         'name' => 'required',
         'fatherName' => 'nullable',
         'motherName' => 'nullable',
+        'SpouseName'=> 'nullable',
         'nid' => 'nullable',
         'passport' => 'nullable',
         'bid' => 'nullable',
@@ -177,6 +182,7 @@ public function storeApplication(Request $request){
         'birthdate' => 'nullable',
         'resident' => 'nullable',
         'service' => 'nullable',
+        'bn'=>'nullable',
         'presentHoldingNumber' => 'nullable',
         'presentVillage' => 'nullable',
         'presentPostOffice' => 'nullable',
@@ -203,6 +209,7 @@ public function storeApplication(Request $request){
     $cert->applicationId = $eightDigitUuid;
     $cert->FatherName = $request->filled('fatherName') ? $validatedData['fatherName'] : null;
     $cert->MotherName = $request->filled('motherName') ? $validatedData['motherName'] : null;
+    $cert->SpouseName = $request->filled('SpouseName') ? $validatedData['SpouseName'] : null;
     $cert->nid = $request->filled('nid') ? $validatedData['nid'] : null;
     $cert->passport = $request->filled('passport') ? $validatedData['passport'] : null;
     $cert->bid = $request->filled('bid') ? $validatedData['bid'] : null;
@@ -210,6 +217,7 @@ public function storeApplication(Request $request){
     $cert->email = $request->filled('email') ? $validatedData['email'] : null;
     $cert->resident = $request->filled('resident') ? $validatedData['resident'] : null;
     $cert->service = $request->filled('service') ? $validatedData['service'] : null;
+    $cert->bn = $request->filled('bn') ? $validatedData['bn'] : false;
     $cert->birthdate = $request->filled('birthdate') ? $validatedData['birthdate'] : null;
     $cert->presentHoldingNumber = $request->filled('presentHoldingNumber') ? $validatedData['presentHoldingNumber'] : null;
     $cert->presentVillage = $request->filled('presentVillage') ? $validatedData['presentVillage'] : null;
@@ -299,79 +307,6 @@ public function getApplicationByApplicationId($applicationId){
             
         ], 201);
     }
-public function updateApplicationStatus(Request $request, $id){
-    $application = Application::find($id);
-    // if request status value is Approved
-    if( $request->input('status') === 'Approved' ){
-        $application->status = $request->status;
-        $application->save();
-        // transfer all data to certificate table
-        $year = date('Y');
-        $month = date('m');
-        $serial = str_pad($application->id, 11, '0', STR_PAD_LEFT);
-        $uid = $year . $month . $serial;
-        
-        $cert = new GenericCertificate;
-        $cert->name = $application->name;
-        $cert->certificateId = $uid;
-        $cert->FatherName = $application->FatherName;
-        $cert->MotherName = $application->MotherName;
-        $cert->nid = $application->nid;
-        $cert->passport = $application->passport;
-        $cert->bid = $application->bid;
-        $cert->mobile = $application->mobile;
-        $cert->email = $application->email;
-        $cert->resident = $application->resident;
-        $cert->service = $application->service;
-        $cert->birthdate = $application->birthdate;
-        $cert->presentHoldingNumber = $application->presentHoldingNumber;
-        $cert->presentVillage = $application->presentVillage;
-        $cert->presentPostOffice = $application->presentPostOffice;
-        $cert->presentPoliceStation = $application->presentPoliceStation;
-        $cert->presentDistrict = $application->presentDistrict;
-        $cert->permanentHoldingNumber = $application->permanentHoldingNumber;
-        $cert->permanentVillage = $application->permanentVillage;
-        $cert->permanentPostOffice = $application->permanentPostOffice;
-        $cert->permanentPoliceStation = $application->permanentPoliceStation;
-        $cert->permanentDistrict = $application->permanentDistrict;
-        $cert->userImage = $application->userImage;
-        $cert->idVerificationImage = $application->idVerificationImage;
-        $cert->homeVerificationimage = $application->homeVerificationimage;
-        $cert->deathVerificationimage = $application->deathVerificationimage;
-        $cert->save();
-        return response()->json([
-            'message' => 'Application ',
-        //      'data'=> $cert,
-             'data'=> $cert,
-            
-        ], 201);
-    }
-    // if request status value is Rejected
-    if( $request->input('status') === 'Rejected' ){
-        $application->status = $request->status;
-        $application->save();
-        return response()->json([
-            'message' => 'Application ',
-        //      'data'=> $cert,
-             'data'=> $application,
-            
-        ], 201);
-    }
-    // if request status value is Pending
-    if( $request->input('status') === 'Pending' ){
-        $application->status = $request->status;
-        $application->save();
-        return response()->json([
-            'message' => 'Application ',
-        //      'data'=> $cert,
-             'data'=> $application,
-            
-        ], 201);
-    }
-
-    
-    
-    }
 public function getApplicationByStatus($status){
     $application = Application::where('status', $status)->get();
     return response()->json([
@@ -404,6 +339,7 @@ public function getApplicationByStatus($status){
         $application->name = $request->name;
         $application->FatherName = $request->FatherName;
         $application->MotherName = $request->MotherName;
+        $application->SpouseName = $request->SpouseName;
         $application->nid = $request->nid;
         $application->passport = $request->passport;
         $application->bid = $request->bid;
@@ -411,6 +347,7 @@ public function getApplicationByStatus($status){
         $application->email = $request->email;
         $application->resident = $request->resident;
         $application->service = $request->service;
+        $application->bn = $request->bn;
         $application->birthdate = $request->birthdate;
         $application->presentHoldingNumber = $request->presentHoldingNumber;
         $application->presentVillage = $request->presentVillage;
@@ -434,16 +371,146 @@ public function getApplicationByStatus($status){
             
         ], 201);
     }
+    // public function updateApplicationStatusWithComment(Request $request, $id){
+    //     $application = Application::find($id);
+    //     $application->status = $request->status;
+    //     $application->comment = $request->comment;
+    //     $application->save();
+    //     return response()->json([
+    //         'message' => 'Application ',
+    //     //      'data'=> $cert,
+    //          'data'=> $application,
+            
+    //     ], 201);
+    // }
     public function updateApplicationStatusWithComment(Request $request, $id){
-        $application = Application::find($id);
+    $application = Application::find($id);
+    // if request status value is Approved
+    if( $request->input('status') === 'Approved' ){
+        $application->status = $request->status;
+        $application->comment = $request->comment;
+        $application->save();
+        // transfer all data to certificate table
+        $year = date('Y');
+        $month = date('m');
+        $serial = str_pad($application->id, 11, '0', STR_PAD_LEFT);
+        $uid = $year . $month . $serial;
+        
+        $cert = new GenericCertificate;
+        $cert->name = $application->name;
+        $cert->certificateId = $uid;
+        $cert->FatherName = $application->FatherName;
+        $cert->MotherName = $application->MotherName;
+        $cert->SpouseName = $application->SpouseName;
+        $cert->nid = $application->nid;
+        $cert->passport = $application->passport;
+        $cert->bid = $application->bid;
+        $cert->mobile = $application->mobile;
+        $cert->email = $application->email;
+        $cert->resident = $application->resident;
+        $cert->service = $application->service;
+        $cert->birthdate = $application->birthdate;
+        $cert->bn= $application->bn;
+        $cert->presentHoldingNumber = $application->presentHoldingNumber;
+        $cert->presentVillage = $application->presentVillage;
+        $cert->presentPostOffice = $application->presentPostOffice;
+        $cert->presentPoliceStation = $application->presentPoliceStation;
+        $cert->presentDistrict = $application->presentDistrict;
+        $cert->permanentHoldingNumber = $application->permanentHoldingNumber;
+        $cert->permanentVillage = $application->permanentVillage;
+        $cert->permanentPostOffice = $application->permanentPostOffice;
+        $cert->permanentPoliceStation = $application->permanentPoliceStation;
+        $cert->permanentDistrict = $application->permanentDistrict;
+        $cert->userImage = $application->userImage;
+        $cert->idVerificationImage = $application->idVerificationImage;
+        $cert->homeVerificationimage = $application->homeVerificationimage;
+        $cert->deathVerificationimage = $application->deathVerificationimage;
+        $cert->save();
+        return response()->json([
+            'message' => 'Application ',
+            'cert'=> $cert,
+             'application'=> $application,
+            
+        ], 201);
+    }
+    // if request status value is Rejected
+    if( $request->input('status') === 'Rejected' ){
         $application->status = $request->status;
         $application->comment = $request->comment;
         $application->save();
         return response()->json([
             'message' => 'Application ',
-        //      'data'=> $cert,
-             'data'=> $application,
+             //'cert'=> $cert,
+             'application'=> $application,
             
         ], 201);
     }
+    // if request status value is Pending
+    if( $request->input('status') === 'Pending' ){
+        $application->status = $request->status;
+        $application->save();
+        return response()->json([
+            'message' => 'Application ',
+        //      'data'=> $cert,
+             'application'=> $application,
+            
+        ], 201);
+    }
+
+    
+    
+    }
+    public function recoverApplicationId (Request $request){
+        // get application by service, dob, vid
+        $application = Application::where('service', $request->service)->where('birthdate', $request->dob)->where('nid', $request->vid)->first();
+        if($application){
+            return response()->json([
+                'message' => 'Application ',
+            //      'data'=> $cert,
+                //  'application'=> $application,
+                'service'=> $request->service,
+                'dob'=> $request->dob,
+                'vid'=> $request->vid,
+                'application'=> $application,
+                
+            ], 201);
+        }
+        $application = Application::where('service', $request->service)->where('birthdate', $request->dob)->where('bid', $request->vid)->first();
+        if($application){
+            return response()->json([
+                'message' => 'Application ',
+            //      'data'=> $cert,
+                //  'application'=> $application,
+                'service'=> $request->service,
+                'dob'=> $request->dob,
+                'vid'=> $request->vid,
+                'application'=> $application,
+                
+            ], 201);
+        }
+        $application = Application::where('service', $request->service)->where('birthdate', $request->dob)->where('passport', $request->vid)->first();
+        if($application){
+            return response()->json([
+                'message' => 'Application ',
+            //      'data'=> $cert,
+                //  'application'=> $application,
+                'service'=> $request->service,
+                'dob'=> $request->dob,
+                'vid'=> $request->vid,
+                'application'=> $application,
+                
+            ], 201);
+        }
+        return response()->json([
+            'message' => 'Application ',
+        //      'data'=> $cert,
+            //  'application'=> $application,
+            'service'=> $request->service,
+            'dob'=> $request->dob,
+            'vid'=> $request->vid,
+            'application'=> $application,
+            
+        ], 201);
+    }
+
 }

@@ -58,7 +58,7 @@ Route::get('/get-application-by-service/{service}', 'App\Http\Controllers\Certif
 Route::get('/get-application-by-status/{status}', 'App\Http\Controllers\CertificateController@getApplicationByStatus');
 
 // update application status 
-Route::post('/update-application-status/{id}', 'App\Http\Controllers\CertificateController@updateApplicationStatus');
+//Route::post('/update-application-status/{id}', 'App\Http\Controllers\CertificateController@updateApplicationStatus');
 
 // update application status with comment
 
@@ -68,3 +68,6 @@ Route::post('/update-application-status-comment/{id}', 'App\Http\Controllers\Cer
 
 Route::post('/update-application/{id}', 'App\Http\Controllers\CertificateController@updateApplication');
 
+// recover application id by service, dob, nid
+
+Route::post('/recover-application-id', 'App\Http\Controllers\CertificateController@recoverApplicationId');
