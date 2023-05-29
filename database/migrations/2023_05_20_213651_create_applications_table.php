@@ -17,6 +17,7 @@ class CreateApplicationsTable extends Migration
            $table->id();
             $table->string('applicationId')->unique();
             $table->string('name')->nullable();
+             $table->string('ApplicantName')->nullable();
             $table->string('FatherName')->nullable();
             $table->string('MotherName')->nullable();
             $table->string('SpouseName')->nullable();

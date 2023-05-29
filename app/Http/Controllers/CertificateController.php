@@ -64,7 +64,7 @@ class CertificateController extends Controller
     $cert->email = $request->filled('email') ? $validatedData['email'] : null;
     $cert->resident = $request->filled('resident') ? $validatedData['resident'] : null;
     $cert->service = $request->filled('service') ? $validatedData['service'] : null;
-    $cert->bn = $request->filled('bn') ? $validatedData['bn'] : false;
+    $cert->bn = $request->filled('bn') ? $validatedData['bn'] : true;
     $cert->birthdate = $request->filled('birthdate') ? $validatedData['birthdate'] : null;
     $cert->presentHoldingNumber = $request->filled('presentHoldingNumber') ? $validatedData['presentHoldingNumber'] : null;
     $cert->presentVillage = $request->filled('presentVillage') ? $validatedData['presentVillage'] : null;
@@ -171,6 +171,7 @@ public function imageUpload(Request $request){
 public function storeApplication(Request $request){
     $validatedData = $request->validate([
         'name' => 'required',
+        'ApplicantName' => 'nullable',
         'fatherName' => 'nullable',
         'motherName' => 'nullable',
         'SpouseName'=> 'nullable',
@@ -207,6 +208,7 @@ public function storeApplication(Request $request){
     $cert = new Application;
     $cert->name = $request->filled('name') ? $validatedData['name'] : null;
     $cert->applicationId = $eightDigitUuid;
+    $cert->ApplicantName = $request->filled('ApplicantName') ? $validatedData['ApplicantName'] : null;
     $cert->FatherName = $request->filled('fatherName') ? $validatedData['fatherName'] : null;
     $cert->MotherName = $request->filled('motherName') ? $validatedData['motherName'] : null;
     $cert->SpouseName = $request->filled('SpouseName') ? $validatedData['SpouseName'] : null;
@@ -217,7 +219,7 @@ public function storeApplication(Request $request){
     $cert->email = $request->filled('email') ? $validatedData['email'] : null;
     $cert->resident = $request->filled('resident') ? $validatedData['resident'] : null;
     $cert->service = $request->filled('service') ? $validatedData['service'] : null;
-    $cert->bn = $request->filled('bn') ? $validatedData['bn'] : false;
+    $cert->bn = $request->filled('bn') ? $validatedData['bn'] : true;
     $cert->birthdate = $request->filled('birthdate') ? $validatedData['birthdate'] : null;
     $cert->presentHoldingNumber = $request->filled('presentHoldingNumber') ? $validatedData['presentHoldingNumber'] : null;
     $cert->presentVillage = $request->filled('presentVillage') ? $validatedData['presentVillage'] : null;
@@ -335,30 +337,63 @@ public function getApplicationByStatus($status){
             ], 201);
         }
     public function updateApplication(Request $request, $id){
+        $validatedData = $request->validate([
+        'name' => 'required',
+        'ApplicantName' => 'nullable',
+        'fatherName' => 'nullable',
+        'motherName' => 'nullable',
+        'SpouseName'=> 'nullable',
+        'nid' => 'nullable',
+        'passport' => 'nullable',
+        'bid' => 'nullable',
+        'mobile' => 'nullable',
+        'email' => 'nullable',
+        'birthdate' => 'nullable',
+        'resident' => 'nullable',
+        'service' => 'nullable',
+        'bn'=>'nullable',
+        'presentHoldingNumber' => 'nullable',
+        'presentVillage' => 'nullable',
+        'presentPostOffice' => 'nullable',
+        'presentPoliceStation' => 'nullable',
+        'presentDistrict' => 'nullable',
+        'permanentHoldingNumber' => 'nullable',
+        'permanentVillage' => 'nullable',
+        'permanentPostOffice' => 'nullable',
+        'permanentPoliceStation' => 'nullable',
+        'permanentDistrict' => 'nullable',
+        'userImage' => 'nullable',
+        'idVerificationImage' => 'nullable',
+        'homeVerificationimage' => 'nullable',
+        'deathVerificationimage' => 'nullable',
+        
+        // Add validation rules for other fields
+    ]);
         $application = Application::find($id);
-        $application->name = $request->name;
-        $application->FatherName = $request->FatherName;
-        $application->MotherName = $request->MotherName;
-        $application->SpouseName = $request->SpouseName;
-        $application->nid = $request->nid;
-        $application->passport = $request->passport;
-        $application->bid = $request->bid;
-        $application->mobile = $request->mobile;
-        $application->email = $request->email;
-        $application->resident = $request->resident;
-        $application->service = $request->service;
-        $application->bn = $request->bn;
-        $application->birthdate = $request->birthdate;
-        $application->presentHoldingNumber = $request->presentHoldingNumber;
-        $application->presentVillage = $request->presentVillage;
-        $application->presentPostOffice = $request->presentPostOffice;
-        $application->presentPoliceStation = $request->presentPoliceStation;
-        $application->presentDistrict = $request->presentDistrict;
-        $application->permanentHoldingNumber = $request->permanentHoldingNumber;
-        $application->permanentVillage = $request->permanentVillage;
-        $application->permanentPostOffice = $request->permanentPostOffice;
-        $application->permanentPoliceStation = $request->permanentPoliceStation;
-        $application->permanentDistrict = $request->permanentDistrict;
+        $application->name = $request->filled('name') ? $validatedData['name'] : null;
+        $application->ApplicantName = $request->filled('ApplicantName') ? $validatedData['ApplicantName'] : null;
+        $application->FatherName =  $request->filled('fatherName') ? $validatedData['fatherName'] : null;
+        $application->MotherName = $request->filled('motherName') ? $validatedData['motherName'] : null;
+        $application->SpouseName =  $request->filled('SpouseName') ? $validatedData['SpouseName'] : null;
+        $application->nid =     $request->filled('nid') ? $validatedData['nid'] : null;
+        $application->passport =    $request->filled('passport') ? $validatedData['passport'] : null;
+        $application->bid =     $request->filled('bid') ? $validatedData['bid'] : null;
+        $application->mobile =  $request->filled('mobile') ? $validatedData['mobile'] : null;
+        $application->email =   $request->filled('email') ? $validatedData['email'] : null;
+        $application->resident =    $request->filled('resident') ? $validatedData['resident'] : null;
+        $application->service =    $request->filled('service') ? $validatedData['service'] : null;
+        $application->bn =  $request->filled('bn') ? $validatedData['bn'] : true;
+        $application->birthdate =   $request->filled('birthdate') ? $validatedData['birthdate'] : null;
+        $application->presentHoldingNumber =    $request->filled('presentHoldingNumber') ? $validatedData['presentHoldingNumber'] : null;
+        $application->presentVillage =  $request->filled('presentVillage') ? $validatedData['presentVillage'] : null;
+        $application->presentPostOffice =   $request->filled('presentPostOffice') ? $validatedData['presentPostOffice'] : null;
+        $application->presentPoliceStation =    $request->filled('presentPoliceStation') ? $validatedData['presentPoliceStation'] : null;
+        $application->presentDistrict =     $request->filled('presentDistrict') ? $validatedData['presentDistrict'] : null;
+        $application->permanentHoldingNumber =   $request->filled('permanentHoldingNumber') ? $validatedData['permanentHoldingNumber'] : null;
+        $application->permanentVillage =    $request->filled('permanentVillage') ? $validatedData['permanentVillage'] : null;
+        $application->permanentPostOffice =     $request->filled('permanentPostOffice') ? $validatedData['permanentPostOffice'] : null;
+        $application->permanentPoliceStation =  $request->filled('permanentPoliceStation') ? $validatedData['permanentPoliceStation'] : null;
+        $application->permanentDistrict =   $request->filled('permanentDistrict') ? $validatedData['permanentDistrict'] : null;
         // $application->userImage = $request->userImage;
         // $application->idVerificationImage = $request->idVerificationImage;
         // $application->homeVerificationimage = $request->homeVerificationimage;
@@ -399,6 +434,7 @@ public function getApplicationByStatus($status){
         $cert = new GenericCertificate;
         $cert->name = $application->name;
         $cert->certificateId = $uid;
+        $cert->ApplicantName = $application->ApplicantName;
         $cert->FatherName = $application->FatherName;
         $cert->MotherName = $application->MotherName;
         $cert->SpouseName = $application->SpouseName;

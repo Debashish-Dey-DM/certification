@@ -16,6 +16,7 @@ class CreateGenericCertificateTable extends Migration
         Schema::create('generic_certificates', function (Blueprint $table) {
             $table->id();
             $table->string('certificateId')->nullable();
+            $table->string('ApplicantName')->nullable();
             $table->string('name')->nullable();
             $table->string('FatherName')->nullable();
             $table->string('MotherName')->nullable();
@@ -28,7 +29,7 @@ class CreateGenericCertificateTable extends Migration
             $table->string('birthdate')->nullable();
             $table->string('resident')->nullable();
             $table->string('service')->nullable();
-            $table->boolean('bn')->default(false);
+            $table->boolean('bn')->default(true);
             $table->string('presentHoldingNumber')->nullable();
             $table->string('presentVillage')->nullable();
             $table->string('presentPostOffice')->nullable();
@@ -55,6 +56,6 @@ class CreateGenericCertificateTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('generic_certificate');
+        Schema::dropIfExists('generic_certificates');
     }
 }
