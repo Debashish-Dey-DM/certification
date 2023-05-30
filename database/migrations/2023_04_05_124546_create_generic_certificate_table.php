@@ -44,7 +44,7 @@ class CreateGenericCertificateTable extends Migration
             $table->string('idVerificationImage')->nullable();
             $table->string('homeVerificationimage')->nullable();
             $table->string('deathVerificationimage')->nullable();            
-            
+            $table->json('nominee')->nullable();
             $table->timestamps();
         });
     }

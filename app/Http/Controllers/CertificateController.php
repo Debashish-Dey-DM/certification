@@ -198,6 +198,10 @@ public function storeApplication(Request $request){
         'idVerificationImage' => 'nullable',
         'homeVerificationimage' => 'nullable',
         'deathVerificationimage' => 'nullable',
+        'nomineeName' => 'nullable',
+        'nomineeVid'=> 'nullable',
+        'nomineeRelation' => 'nullable',
+        'nomineeDob' => 'nullable',
         
         // Add validation rules for other fields
     ]);
@@ -231,7 +235,8 @@ public function storeApplication(Request $request){
     $cert->permanentPostOffice = $request->filled('permanentPostOffice') ? $validatedData['permanentPostOffice'] : null;
     $cert->permanentPoliceStation = $request->filled('permanentPoliceStation') ? $validatedData['permanentPoliceStation'] : null;
     $cert->permanentDistrict = $request->filled('permanentDistrict') ? $validatedData['permanentDistrict'] : null;
-
+    $data = $request->input('nomineeDetails');
+    $cert->nominee = json_encode($data);
     if ($request->hasFile('userImage')) {
         $userImageName = uniqid().'.'.$request->userImage->extension();  
         $request->userImage->move(public_path('images'), $userImageName);
@@ -327,12 +332,15 @@ public function getApplicationByStatus($status){
                 
             ], 201);
         }
-    public function getByCertificateIdAndDob($certificateId, $dob){
-        $Certificate = GenericCertificate::where('certificateId', $certificateId)->where('birthdate', $dob)->get();
+    public function getByCertificateIdAndDob(Request $request){
+        
+        $certificateId = $request->input('certificateId');
+        $dob = $request->input('dob');
+        $Certificate = GenericCertificate::where('certificateId', $certificateId)->where('birthDate', $dob)->get();
         return response()->json([
                 'message' => 'Certificate by Certificate id and dob ',
             //      'data'=> $cert,
-                 'data'=> $Certificate,
+                 'data'=> $Certificate
                 
             ], 201);
         }
@@ -394,6 +402,8 @@ public function getApplicationByStatus($status){
         $application->permanentPostOffice =     $request->filled('permanentPostOffice') ? $validatedData['permanentPostOffice'] : null;
         $application->permanentPoliceStation =  $request->filled('permanentPoliceStation') ? $validatedData['permanentPoliceStation'] : null;
         $application->permanentDistrict =   $request->filled('permanentDistrict') ? $validatedData['permanentDistrict'] : null;
+        $data = $request->input('nomineeDetails');
+        $application->nominee = json_encode($data);
         // $application->userImage = $request->userImage;
         // $application->idVerificationImage = $request->idVerificationImage;
         // $application->homeVerificationimage = $request->homeVerificationimage;
@@ -459,6 +469,7 @@ public function getApplicationByStatus($status){
         $cert->idVerificationImage = $application->idVerificationImage;
         $cert->homeVerificationimage = $application->homeVerificationimage;
         $cert->deathVerificationimage = $application->deathVerificationimage;
+        $cert->nominee = $application->nominee;
         $cert->save();
 
         $application->status = $request->status;
