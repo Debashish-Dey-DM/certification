@@ -31,7 +31,7 @@ Route::get('/get-cert-by-certificateId/{certificateId}', 'App\Http\Controllers\C
 
 // get certificate by certificate id and date of birth
 
-Route::get('/get-cert-by-certificateId-dob/{certificateId}/{dob}', 'App\Http\Controllers\CertificateController@getByCertificateIdAndDob');
+Route::post('/get-cert-by-certificateId-dob', 'App\Http\Controllers\CertificateController@getByCertificateIdAndDob');
 
 // get certificate by service
 Route::get('/get-cert-by-service/{service}', 'App\Http\Controllers\CertificateController@getByService');

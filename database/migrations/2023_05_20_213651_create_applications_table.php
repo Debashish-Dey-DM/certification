@@ -47,6 +47,7 @@ class CreateApplicationsTable extends Migration
             $table->string('comment')->nullable();          
             $table->string('status')->default('pending');
             $table->string('certificate_id')->nullable();
+            $table->json('nominee')->nullable();
             $table->timestamps();
         });
     }
