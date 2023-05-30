@@ -422,9 +422,7 @@ public function getApplicationByStatus($status){
     $application = Application::find($id);
     // if request status value is Approved
     if( $request->input('status') === 'Approved' ){
-        $application->status = $request->status;
-        $application->comment = $request->comment;
-        $application->save();
+        
         // transfer all data to certificate table
         $year = date('Y');
         $month = date('m');
@@ -462,6 +460,11 @@ public function getApplicationByStatus($status){
         $cert->homeVerificationimage = $application->homeVerificationimage;
         $cert->deathVerificationimage = $application->deathVerificationimage;
         $cert->save();
+
+        $application->status = $request->status;
+        $application->comment = $request->comment;
+        $application->certificate_id = $cert->certificateId;
+        $application->save();
         return response()->json([
             'message' => 'Application ',
             'cert'=> $cert,

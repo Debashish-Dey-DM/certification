@@ -46,6 +46,7 @@ class CreateApplicationsTable extends Migration
             $table->string('deathVerificationimage')->nullable();  
             $table->string('comment')->nullable();          
             $table->string('status')->default('pending');
+            $table->string('certificate_id')->nullable();
             $table->timestamps();
         });
     }
