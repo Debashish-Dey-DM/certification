@@ -237,39 +237,39 @@ public function storeApplication(Request $request){
     $cert->permanentDistrict = $request->filled('permanentDistrict') ? $validatedData['permanentDistrict'] : null;
     $data = $request->input('nomineeDetails');
     $cert->nominee = json_encode($data);
-    if ($request->hasFile('userImage')) {
-        $userImageName = uniqid().'.'.$request->userImage->extension();  
-        $request->userImage->move(public_path('images'), $userImageName);
-        $userImagePath = 'images/' . $userImageName;
-        } else {
-        $userImagePath = null;
-        }
-        if ($request->hasFile('idVerificationImage')) {
-        $idVerificationImageName = uniqid().'.'.$request->idVerificationImage->extension();
-        $request->idVerificationImage->move(public_path('images'), $idVerificationImageName);
-        $idVerificationImageNamePath = 'images/' . $idVerificationImageName;
-        } else {
-        $idVerificationImageNamePath = null;
-        }
-        if ($request->hasFile('homeVerificationimage')) {
-        $homeVerificationimageName = uniqid().'.'.$request->homeVerificationimage->extension();
-        $request->homeVerificationimage->move(public_path('images'), $homeVerificationimageName);
-        $homeVerificationimageNamePath = 'images/' . $homeVerificationimageName;
-        } else {
-        $homeVerificationimageNamePath = null;
-        }
-        if ($request->hasFile('deathVerificationimage')) {
-        $deathVerificationimageName = uniqid().'.'.$request->deathVerificationimage->extension();
-        $request->deathVerificationimage->move(public_path('images'), $deathVerificationimageName);
-        $deathVerificationimageNamePath = 'images/' . $deathVerificationimageName;
-        } else {
-        $deathVerificationimageNamePath = null;
-        }
+        // if ($request->hasFile('userImage')) {
+        // $userImageName = uniqid().'.'.$request->userImage->extension();  
+        // $request->userImage->move(public_path('images'), $userImageName);
+        // $userImagePath = 'images/' . $userImageName;
+        // } else {
+        // $userImagePath = null;
+        // }
+        // if ($request->hasFile('idVerificationImage')) {
+        // $idVerificationImageName = uniqid().'.'.$request->idVerificationImage->extension();
+        // $request->idVerificationImage->move(public_path('images'), $idVerificationImageName);
+        // $idVerificationImageNamePath = 'images/' . $idVerificationImageName;
+        // } else {
+        // $idVerificationImageNamePath = null;
+        // }
+        // if ($request->hasFile('homeVerificationimage')) {
+        // $homeVerificationimageName = uniqid().'.'.$request->homeVerificationimage->extension();
+        // $request->homeVerificationimage->move(public_path('images'), $homeVerificationimageName);
+        // $homeVerificationimageNamePath = 'images/' . $homeVerificationimageName;
+        // } else {
+        // $homeVerificationimageNamePath = null;
+        // }
+        // if ($request->hasFile('deathVerificationimage')) {
+        // $deathVerificationimageName = uniqid().'.'.$request->deathVerificationimage->extension();
+        // $request->deathVerificationimage->move(public_path('images'), $deathVerificationimageName);
+        // $deathVerificationimageNamePath = 'images/' . $deathVerificationimageName;
+        // } else {
+        // $deathVerificationimageNamePath = null;
+        // }
 
-        $cert->userImage = $userImagePath;
-        $cert->idVerificationImage = $idVerificationImageNamePath;
-        $cert->homeVerificationimage = $homeVerificationimageNamePath;
-        $cert->deathVerificationimage = $deathVerificationimageNamePath;
+        $cert->userImage = $request->filled('userImage') ? $validatedData['userImage'] : null;
+        $cert->idVerificationImage = $request->filled('idVerificationImage') ? $validatedData['idVerificationImage'] : null;
+        $cert->homeVerificationimage = $request->filled('homeVerificationimage') ? $validatedData['homeVerificationimage'] : null;
+        $cert->deathVerificationimage = $request->filled('deathVerificationimage') ? $validatedData['deathVerificationimage'] : null;
         $cert->save();
     return response()->json([
             'message' => 'Application created successfully ',
